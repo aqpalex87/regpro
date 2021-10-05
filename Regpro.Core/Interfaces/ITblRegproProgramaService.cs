@@ -14,7 +14,7 @@ namespace Regpro.Core.Interfaces
 
         Task InsertPrograma(TblRegproPrograma programa);
         Task<bool> UpdatePrograma(TblRegproPrograma programa);
-        Task<TblRegproPrograma> GetProgramaByCcodMod(string cCodMod, string Codooii);
+        Task<TblRegproProgramaSelectDto> GetProgramaByCcodMod(string cCodMod, string Codooii);
         Task<CenterEducationalNearSelectDto> GetCenterEducationalNear(string cCodMod, string CodUgel);
 
     }

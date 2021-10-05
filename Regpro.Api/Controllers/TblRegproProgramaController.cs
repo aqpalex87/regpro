@@ -72,9 +72,8 @@ namespace Regpro.Api.Controllers
         [HttpGet("GetProgramaByCodigoModular/{cCodMod}/{Codooii}")]
         public async Task<IActionResult> GetProgramaByCcodMod(string cCodMod, string Codooii)
         {
-            var programaccod = await _tblRegproProgramaService.GetProgramaByCcodMod(cCodMod, Codooii);
-            var programaDto = _mapper.Map<TblRegproProgramaDto>(programaccod);
-            var response = new ApiResponse<TblRegproProgramaDto>(programaDto);
+            var result = await _tblRegproProgramaService.GetProgramaByCcodMod(cCodMod, Codooii);
+            var response = new ApiResponse<TblRegproProgramaSelectDto>(result);
             return Ok(response);
         }
 

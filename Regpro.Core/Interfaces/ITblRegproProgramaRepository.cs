@@ -8,7 +8,7 @@ namespace Regpro.Core.Interfaces
     {
        Task<TblRegproPrograma> GetProgramaById(long nIdPrograma);
 
-        Task<TblRegproPrograma> GetProgramaByCcodMod(string cCodMod, string Codooii);
+        Task<TblRegproProgramaSelectDto> GetProgramaByCcodMod(string cCodMod, string Codooii);
         Task<CenterEducationalNearSelectDto> GetCenterEducationalNear(string cCodMod, string CodUgel);
     }
 }

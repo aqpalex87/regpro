@@ -103,7 +103,7 @@ namespace Regpro.Core.Services
             return true;
         }
 
-        public async Task<TblRegproPrograma> GetProgramaByCcodMod(string cCodMod, string Codooii)
+        public async Task<TblRegproProgramaSelectDto> GetProgramaByCcodMod(string cCodMod, string Codooii)
         {
             return await _unitOfWork.TblRegproProgramaRepository.GetProgramaByCcodMod(cCodMod, Codooii);
         }
