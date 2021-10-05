@@ -1,0 +1,25 @@
+<div class="row border-bottom">
+  <nav
+    class="navbar navbar-static-top"
+    role="navigation"
+    style="margin-bottom: 0"
+  >
+    <div class="navbar-header">
+      <a class="minimalize-styl-2 btn btn-primary" (click)="toggleNavigation()">
+        <i class="fa fa-bars menu"></i>
+      </a>
+    </div>
+    <!-- <div class="pull-left">
+      <h2>Celtic Dashboard</h2>
+    </div> -->
+    <ul class="nav navbar-top-links navbar-right pull-right">
+      <li *ngFor="let user of users">{{ user.username }}</li>
+      <li>
+        <a [routerLink]="['/login']">
+          <i class="fa fa-sign-out fa-2x"></i>
+          Cerrar Sesión
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

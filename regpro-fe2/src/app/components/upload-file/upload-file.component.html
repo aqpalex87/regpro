@@ -1,0 +1,37 @@
+<button
+  appDnd
+  *ngIf="!files || files.length === 0"
+  mat-stroked-button
+  class="btn-upload btn-block"
+  (click)="uploadFile.click()"
+  (fileDropped)="onFileDropped($event)" [disabled]="blockLoad">
+  <!-- justify-content-center -->
+  <div #dropZone class="align-items-center">
+    <i class="fa fa-cloud fa-lg"></i>
+    <div class="block ml-2 font-light">
+      Selecciona para buscar el documento
+    </div>
+  </div>
+</button>
+<button *ngIf="files && files.length > 0" mat-stroked-button class="btn-upload has-file btn-block"
+   (click)="uploadFile.click()" [disabled]="blockLoad">
+  <div class="flex flex-wrap -mx-1">
+    <div *ngFor="let file of files; let i = index" class="m-3">
+      <div
+        class="align-items-center justify-content-center"
+        style="background-color: #FFE090;">
+        <div
+          class="block mr-3 font-light leading-tight"
+          [class.truncated-span]="multiple">
+          {{ file.name }}
+        </div>
+        <i class="fa fa-trash fa-lg"
+          (click)="removeFile(i);"
+          *ngIf="!blockLoad">
+        </i>
+      </div>
+    </div>
+  </div>
+</button>
+<input #uploadFile (change)="upload($event)" type='file' [accept]="accept"
+ style="display:none" [multiple]="multiple" />

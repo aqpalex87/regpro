@@ -1,0 +1,111 @@
+<div [formGroup]="formRequestIdentification" *ngIf="requestData">
+  <fieldset>
+    <legend>DATOS DE IDENTIFICACIÓN</legend>
+  </fieldset>
+  <div class="form-group row" *ngIf="flagSearch">
+    <label class="col-sm-2 col-form-label">Buscar</label>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <input type="text" class="form-control" maxlength="50" formControlName="search" />
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" [disabled]="false"
+          (click)="searchSolicitud()">
+            <i class="icon fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-2 col-form-label">Nombre <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Nombre <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-1" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'NAME')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" maxlength="50" formControlName="name" [readonly]="flagReadOnlyControls && flagReadOnlyName" />
+      <rgp-error-message [control]="formRequestIdentification.get('name')" error="Debes ingresar un nombre">
+      </rgp-error-message>
+    </div>
+
+    <label *ngIf="!flagCheckEdit" class="col-sm-2 col-form-label">Tipo de Gestión <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Tipo de Gestión <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-1" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'GESTION')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <select class="form-control" (change)="tipogestionChanged($event.target.value, 'SAVE')" formControlName="typeManagement" [attr.disabled]="flagReadOnlyControls && flagReadOnlyGestion ? '' : null">
+        <option *ngFor="let iTypeManagement of requestData.typeManagements" [value]="iTypeManagement.nIdMaestro">
+          {{ iTypeManagement.cNom }}
+        </option>
+      </select>
+      <rgp-error-select [control]="formRequestIdentification.get('typeManagement').value == 26"
+        error="Debes ingresar un tipo de gestión"></rgp-error-select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-2 col-form-label">Tipo de Programa <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Tipo de Programa <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-1" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'PROGRAMA')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <select class="form-control" class="form-control" formControlName="typeProgram" [attr.disabled]="flagReadOnlyControls && flagReadOnlyPrograma ? '' : null">
+        <option *ngFor="let iTypeProgram of requestData.typePrograms" [value]="iTypeProgram.nIdMaestro">
+          {{ iTypeProgram.cNom }}
+        </option>
+      </select>
+      <rgp-error-select [control]="formRequestIdentification.get('typeProgram').value == 1"
+        error="Debes ingresar un tipo de programa"></rgp-error-select>
+    </div>
+
+    <label *ngIf="!flagCheckEdit" class="col-sm-2 col-form-label">Dependencia <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Dependencia <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-1" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'DEPENDENCIA')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <select class="form-control" (change)="dependenciaChanged($event.target.value, 'SAVE')" formControlName="typeDependency" [attr.disabled]="flagReadOnlyControls && flagReadOnlyDependencia ? '' : null">
+        <option *ngFor="let iTypeDependency of requestData.typeDependencies" [value]="iTypeDependency.nIdMaestro">
+          {{ iTypeDependency.cNom }}
+        </option>
+      </select>
+      <rgp-error-select [control]="formRequestIdentification.get('typeDependency').value == null"
+        error="Debes ingresar un tipo de dependencia"></rgp-error-select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-6">
+
+    </div>
+    <label *ngIf="!flagCheckEdit" class="col-sm-2 col-form-label">Entidad gestora <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Entidad gestora <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-1" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'GESTORA')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <select class="form-control" formControlName="typeManagingEntity" [attr.disabled]="flagReadOnlyControls && flagReadOnlyGestora ? '' : null">
+        <option *ngFor="let iTypeProgram of requestData.typeManagingEntitys" [value]="iTypeProgram.nIdMaestro">
+          {{ iTypeProgram.cNom }}
+        </option>
+      </select>
+      <rgp-error-select [control]="formRequestIdentification.get('typeManagingEntity').value == null"
+        error="Debes ingresar una entidad gestora"></rgp-error-select>
+    </div>
+  </div>
+</div>

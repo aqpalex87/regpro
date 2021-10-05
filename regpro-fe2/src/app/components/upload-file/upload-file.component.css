@@ -1,0 +1,32 @@
+.btn-upload {
+  color: #63636A!important;
+  font-size: 12px!important;
+  font-weight: 300!important;
+  line-height: 42px!important;
+  font-family: 'Open Sans', sans-serif!important;
+  padding: 0 10px !important;
+}
+
+.btn-upload .has-file {
+  text-align: left!important;
+}
+
+.truncated-span {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.fileover {
+  background-color: #eaedfb!important;
+  opacity: .75;
+}
+
+@media (min-width: 1280px) {
+
+  .btn-upload {
+    padding: 0 26px !important;
+  }
+}

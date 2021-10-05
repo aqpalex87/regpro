@@ -1,0 +1,292 @@
+<div [formGroup]="formRequestLocation" *ngIf="ubigeoData">
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-3 col-form-label">Ubigeo <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Ubigeo <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-2" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'UBIGEO')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-3">
+      <select *ngIf="ubigeoData" (change)="departamentChanged($event.target.value)" class="form-control"
+        formControlName="selectedRegion" [attr.disabled]="flagReadOnlyControls && flagReadOnlyUbigeo ? '' : null">
+        <option *ngFor="let iRegion of ubigeoData.regions" value="{{ iRegion.idRegion }}">
+          {{ iRegion.region }}
+        </option>
+      </select>
+      <rgp-error-message [control]="formRequestLocation.get('selectedRegion')" error="Debes seleccionar una Región">
+      </rgp-error-message>
+    </div>
+
+    <div class="col-sm-3">
+      <select *ngIf="ubigeoData" (change)="provinceChanged($event.target.value)" class="form-control"
+        formControlName="selectedProvince" [attr.disabled]="flagReadOnlyControls && flagReadOnlyUbigeo ? '' : null">
+        <option *ngFor="let iProvince of ubigeoData.provinces" [value]="iProvince.idProvincia">
+          {{ iProvince.provincia1 }}
+        </option>
+      </select>
+      <rgp-error-message [control]="formRequestLocation.get('selectedProvince')"
+        error="Debes seleccionar una Provincia"></rgp-error-message>
+    </div>
+    <div class="col-sm-3">
+      <select *ngIf="ubigeoData" class="form-control" (change)="districtChanged($event.target.value)"
+        formControlName="selectedDistrict" [attr.disabled]="flagReadOnlyControls && flagReadOnlyUbigeo ? '' : null">
+        <option *ngFor="let iDistrict of ubigeoData.districts" [value]="iDistrict.idDistrito">
+          {{ iDistrict.distrito1 }}
+        </option>
+      </select>
+      <rgp-error-message [control]="formRequestLocation.get('selectedDistrict')" error="Debes seleccionar un Distrito">
+      </rgp-error-message>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-3 col-form-label">Centro Poblado <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Centro Poblado <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-2" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'CENPOBLADO')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Cód"  readonly formControlName="selectedVillageCode" />
+        <rgp-error-message [control]="formRequestLocation.get('selectedVillageCode')"
+          error="Debes seleccionar un Centro Poblado"></rgp-error-message>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" [disabled]="disableVillageCentre"
+            (click)="openSearchVillagesModal(template)">
+            <i class="icon fa fa-search"></i>
+          </button>
+        </span>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" [disabled]="disableVillageCentre"
+            (click)="discarSelectedVillageCenter()">
+            <i class="fa fa-trash-o"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" placeholder="Nombre" readonly formControlName="selectedVillageName" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-3 col-form-label">Coordenadas <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Coordenadas <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-2" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'COORDENADAS')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <input type="text" name="Prog105" class="form-control" placeholder="0" readonly
+        formControlName="selectedVillageLatitude" />
+    </div>
+    <div class="col-sm-5">
+      <input type="text" name="Prog106" class="form-control" placeholder="0" readonly
+        formControlName="selectedVillageLongitude" />
+      <input type="hidden" formControlName="selectedVillageGeoLocalization">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Croquis <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-9">
+      <app-upload-file
+        [multiple]="false"
+        [accept]="'.pdf'"
+        [types]="['application/pdf']"
+        [tamanioFile]="tamanioFile"
+        [blockLoad]="flagReadOnlyControls"
+        (valueChange)="uploadImage($event)">
+      </app-upload-file>
+      <!-- <input type="file" class="form-control-file" (change)="uploadFile($event.target.files)" /> -->
+      <small class="form-text text-muted">
+        Se permite adjuntar archivos en formato .pdf y hasta 3MB
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-3 col-form-label">Dirección <span style="color: #ef5350">(*)</span></label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Dirección <span style="color: #ef5350">(*)</span></label>
+    <div class="col-sm-2" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'DIRECCION')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-4">
+      <select *ngIf="requestData" class="form-control" formControlName="typeAvenueSelected" [attr.disabled]="flagReadOnlyControls && flagReadOnlyDireccion ? '' : null">
+        <option *ngFor="let iTypeAvenue of requestData.typeAvenues" [value]="iTypeAvenue.nIdMaestro">
+          {{ iTypeAvenue.cNom }}
+        </option>
+      </select>
+      <rgp-error-select [control]="formRequestLocation.get('typeAvenueSelected').value == 16"
+        error="Debes seleccionar un Tipo de Avenida"></rgp-error-select>
+    </div>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" placeholder="Nombre de Vía" formControlName="nameOfRoad" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3">
+      <input type="number" class="form-control" placeholder="Número" min="1" formControlName="numberAddress" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" placeholder="Manzana" formControlName="blockAddress" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" placeholder="Lote" formControlName="lotAddress" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-4">
+      <select *ngIf="requestData" class="form-control" formControlName="typeLocationSelected" [attr.disabled]="flagReadOnlyControls && flagReadOnlyDireccion ? '' : null">
+        <option *ngFor="let iTypeLocation of requestData.typeLocation" [value]="iTypeLocation.nIdMaestro">
+          {{ iTypeLocation.cNom }}
+        </option>
+      </select>
+      <rgp-error-select [control]="formRequestLocation.get('typeLocationSelected').value == 48"
+        error="Debes seleccionar un Tipo de Ubicación"></rgp-error-select>
+    </div>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" placeholder="Localidad" formControlName="location" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" placeholder="Etapa" formControlName="stage" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" placeholder="Sector" formControlName="sector" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" placeholder="Zona" formControlName="zone" [readonly]="flagReadOnlyControls && flagReadOnlyDireccion" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-3 col-form-label">Referencia</label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Referencia</label>
+    <div class="col-sm-2" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'REFERENCIA')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-9">
+      <textarea class="form-control" rows="2" style="resize: none" formControlName="reference" [readonly]="flagReadOnlyControls && flagReadOnlyReferencia"></textarea>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label *ngIf="!flagCheckEdit" class="col-sm-3 col-form-label">Serv. Educativo Cercano</label>
+    <label *ngIf="flagCheckEdit" class="col-sm-1 col-form-label">Serv. Educativo Cercano</label>
+    <div class="col-sm-2" *ngIf="flagCheckEdit">
+      <label class="switch">
+        <input type="checkbox" #ck (change)="onChangeCheck(ck.checked, 'SEREDUCATIVO')">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-sm-2" style="padding-right: 0px;">
+      <input type="number" class="form-control" placeholder="Código" formControlName="codeNeareastEducationCentre" [readonly]="flagReadOnlyControls && flagReadOnlyServEducativo" />
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="button" (click)="searchServEducCerc()"
+          class="btn btn-default" [disabled]="flagReadOnlyControls && flagReadOnlyServEducativo">
+            <i class="fa fa-search fa-lg"></i>
+          </button>
+        </span>
+        <span class="input-group-btn">
+          <button type="button" (click)="setearEmptyServEduCerc(null,false)"
+            class="btn btn-default" [disabled]="flagReadOnlyControls && flagReadOnlyServEducativo">
+            <i class="fa fa-refresh fa-lg"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" placeholder="Número y/o Nombre" readonly
+        formControlName="numberNameNearestEducationCentre" />
+    </div>
+  </div>
+</div>
+<!--<div class="col-sm-5">
+        <div id="mapa" style="width:100%;height:520px;"></div>
+        <small class="form-text text-muted">
+            IMPORTANTE: Si no se visualiza el mapa se recomienda actualizar la página presionando la tecla F5
+        </small>
+    </div>!-->
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Cargar Centro poblado</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancelVillageSelection()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <!-- <div class="form-group">
+        <label for="buscarCentroPoblado">Centro Poblado</label>
+        <ng-select [items]="villages" bindLabel="CUSTOMTEXT" bindValue="CODCP" [(ngModel)]="selectedVillage"
+          name="buscarCentroPoblado">
+        </ng-select>
+      </div> -->
+      <ngx-table
+        [configuration]="configuration"
+        [data]="villages"
+        [columns]="columns"
+        [pagination]="pagination"
+        (event)="eventEmittedCentroPoblado($event)">
+      </ngx-table>
+      <!-- <table class="table table-bordered table-responsive table-striped table-hover">
+        <thead class="thead-red">
+          <tr>
+            <th>Codigo CP</th>
+            <th>Nombre CP</th>
+            <th>Ubigeo</th>
+            <th>Ver Ubicación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of villages | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+            <td>{{item.codcp}}</td>
+            <td>{{item.denominacion}}</td>
+            <td>{{item.ubigeo}}</td>
+            <td><button class="btn btn-sm btn-success">Ver Ubicación</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <ngb-pagination [pageSize]="25" [collectionSize]="100" [(page)]="page" [boundaryLinks]="true"></ngb-pagination> -->
+    </div>
+    <div class="row">
+      <div class="col-sm-6"></div>
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-primary" (click)="confirmVillageSelection()">
+          Confirmar
+        </button>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-danger" (click)="cancelVillageSelection()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

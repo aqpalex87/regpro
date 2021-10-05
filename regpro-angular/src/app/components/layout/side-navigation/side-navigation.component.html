@@ -1,0 +1,132 @@
+xxx
+<div *ngIf="hasRole$ | async">
+  <ng-container *ngxPermissionsOnly="['PRESIDENT','GUEST']; else elseBlock">
+    Hello, I am a president
+  </ng-container>
+</div>
+
+<ng-template #elseBlock>
+  <div *ngIf="hasRole$ | async">
+    otro rol
+  </div>
+</ng-template>
+
+<div *ngxPermissionsOnly="['GUEST']">
+  Hello, I am a guest.
+</div>
+
+<div *ngxPermissionsOnly="['ADMIN']">
+  Hello, I am an admin.
+</div>
+
+<div *ngxPermissionsOnly="['PRESIDENT']">
+  Hello, I am a president.
+</div>
+
+<div *ngxPermissionsOnly="['PRIME-MINISTER']">
+  Hello, I am a prime minister.
+</div>
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class="profile-element d-flex justify-content-center">
+          <a [routerLink]="['/regpro']">
+            <img style="max-height: 40px" alt="Regpro Logo" src="assets/images/logo-rgp.png" />
+          </a>
+          <a class="text-center">
+            <span class="block m-t-sm">
+              <strong class="font-bold">David Williams</strong>
+            </span>
+            <span class="text-muted text-xs block">Art Director <b class="caret"></b>
+            </span>
+          </a>
+        </div>
+        <div class="logo-element">
+          <a [routerLink]="['/regpro']">
+            <img alt="image" class="img-circle" src="assets/images/profile_small.jpg" />
+          </a>
+        </div>
+      </li>
+
+      <li [ngClass]="{ active: activeRoute('login') }">
+        <a [routerLink]="['']">
+          <i class="fa fa-th-large"></i>
+          <span class="nav-label">USUARIOS</span>
+        </a>
+      </li>
+
+      <li [ngClass]="{ active: activeRoute('dailytask') }">
+        <!-- <a [routerLink]="['/dashboard/dailytask']"> -->
+        <a>
+          <i class="fa fa-tasks"></i>
+          <span class="nav-label">REGISTRO </span>
+          <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{ in: activeRoute('dailytask') }">
+          <!-- <li [ngClass]="{ active: activeRoute('dashboard1') }">
+            <a [routerLink]="['/regpro/registro/test']">Testing</a>
+          </li> -->
+          <li [ngClass]="{ active: activeRoute('dashboard1') }">
+            <a [routerLink]="['/regpro/registro/v-ugl-sol-creacion']">Solicitud de Creación</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard2') }">
+            <a [routerLink]="['/regpro/registro/v-ugl-sol-modificacion']">Solicitud de Modificación</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard3') }">
+            <a [routerLink]="['/regpro/registro/v-ugl-sol-renovacion']">Solicitud de Renovación</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard4') }">
+            <a [routerLink]="['/regpro/registro/v-ugl-sol-cierre']">Solicitud de Cierre</a>
+          </li>
+        </ul>
+      </li>
+
+      <li [ngClass]="{ active: activeRoute('starter') }">
+        <a [routerLink]="['/starterview']">
+          <i class="fa fa-th-large"></i>
+          <span class="nav-label">GESTIÓN</span>
+          <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{ in: activeRoute('dailytask') }">
+          <li [ngClass]="{ active: activeRoute('dashboard1') }">
+            <a [routerLink]="['/regpro/gestion/solicitudes']">Solicitudes en Proceso</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard2') }">
+            <a [routerLink]="['/dashboards/dashboard2']">Histórico de Solicitudes</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard3') }">
+            <a [routerLink]="['/dashboards/dashboard3']">Revisión de Solicitudes</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard4') }">
+            <a [routerLink]="['/dashboards/dashboard4']">Deshacer Aprobación de Solicitudes</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard4') }">
+            <a [routerLink]="['/dashboards/dashboard4']">Gestión de Programas</a>
+          </li>
+        </ul>
+      </li>
+      <li [ngClass]="{ active: activeRoute('login') }">
+        <a [routerLink]="['']">
+          <i class="fa fa-th-large"></i>
+          <span class="nav-label">CONFIGURACIÓN</span>
+          <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{ in: activeRoute('dailytask') }">
+          <li [ngClass]="{ active: activeRoute('dashboard1') }">
+            <a [routerLink]="['/dashboards/dashboard1']">Reinicio de Actividades</a>
+          </li>
+          <li [ngClass]="{ active: activeRoute('dashboard2') }">
+            <a [routerLink]="['/dashboards/dashboard2']">Sincronizar Programas</a>
+          </li>
+        </ul>
+      </li>
+      <li [ngClass]="{ active: activeRoute('login') }">
+        <a [routerLink]="['']">
+          <i class="fa fa-th-large"></i>
+          <span class="nav-label">INFORMES</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
